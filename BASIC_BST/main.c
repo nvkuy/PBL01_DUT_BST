@@ -1,5 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
+#include <math.h>
 
 struct node
 {
@@ -34,6 +36,17 @@ void inorder(struct node *root)
 {
     dfs(root);
     printf("\n");
+}
+
+struct node *find(struct node *node, int key) {
+    if (node == NULL)
+        return node;
+    if (key < node->key)
+        return find(node->left, key);
+    else if (key > node->key)
+        return find(node->right, key);
+    else
+        return node;
 }
 
 struct node *insert(struct node *node, int key, int value, struct node *pre)
@@ -91,25 +104,53 @@ struct node *deleteNode(struct node *root, int key)
     return root;
 }
 
+//Binary search tree operations
+struct node *root;
+int maxKey;
 
+void newTree() {
+    maxKey = -1e9;
+    root = NULL;
+}
+
+struct node *getBeginNode() {
+    return minValueNode(root);
+};
+
+bool isEnd(struct node *node) {
+    if ((node->key) == maxKey)
+        return true;
+    return false;
+}
+
+void addNode(int key, int val) {
+    root = insert(root, key, val, NULL);
+    if (key > maxKey)
+        maxKey = key;
+}
+
+void delNode(int key) {
+    root = deleteNode(root, key);
+}
 
 int main()
 {
-    struct node *root = NULL;
-    root = insert(root, 8, 3, NULL);
-    root = insert(root, 3, 2, NULL);
-    root = insert(root, 1, 3, NULL);
-    root = insert(root, 6, 2, NULL);
-    root = insert(root, 7, 1, NULL);
-    root = insert(root, 10, 9, NULL);
-    root = insert(root, 14, 4, NULL);
-    root = insert(root, 4, 6, NULL);
+
+    newTree();
+    addNode(8, 3);
+    addNode(3, 2);
+    addNode(1, 3);
+    addNode(6, 2);
+    addNode(7, 1);
+    addNode(10, 9);
+    addNode(14, 4);
+    addNode(4, 6);
     inorder(root);
 
-    root = deleteNode(root, 6);
+    delNode(6);
     inorder(root);
 
-    root = deleteNode(root, 3);
+    delNode(3);
     inorder(root);
 
 }
