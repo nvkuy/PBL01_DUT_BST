@@ -4,15 +4,16 @@
 struct node
 {
     int key, value;
-    struct node *left, *right;
+    struct node *left, *right, *parent;
 };
 
-struct node *newNode(int nkey, int nval)
+struct node *newNode(int nkey, int nval, struct node *pre)
 {
     struct node *temp = (struct node *)malloc(sizeof(struct node));
     temp->key = nkey;
     temp->value = nval;
     temp->left = temp->right = NULL;
+    temp->parent = pre;
     return temp;
 }
 
@@ -21,6 +22,9 @@ void dfs(struct node *root)
     if (root != NULL)
     {
         dfs(root->left);
+        struct node *par = root->parent;
+        if (par != NULL)
+            printf("%d:", par->key);
         printf("%d:%d ", root->key, root->value);
         dfs(root->right);
     }
@@ -29,16 +33,17 @@ void dfs(struct node *root)
 void inorder(struct node *root)
 {
     dfs(root);
+    printf("\n");
 }
 
-struct node *insert(struct node *node, int key, int value)
+struct node *insert(struct node *node, int key, int value, struct node *pre)
 {
-    if (node == NULL) return newNode(key, value);
+    if (node == NULL) return newNode(key, value, pre);
 
     if (key < node->key)
-        node->left = insert(node->left, key, value);
+        node->left = insert(node->left, key, value, node);
     else
-        node->right = insert(node->right, key, value);
+        node->right = insert(node->right, key, value, node);
 
     return node;
 }
@@ -86,22 +91,25 @@ struct node *deleteNode(struct node *root, int key)
     return root;
 }
 
+
+
 int main()
 {
     struct node *root = NULL;
-    root = insert(root, 8, 3);
-    root = insert(root, 3, 2);
-    root = insert(root, 1, 3);
-    root = insert(root, 6, 2);
-    root = insert(root, 7, 1);
-    root = insert(root, 10, 9);
-    root = insert(root, 14, 4);
-    root = insert(root, 4, 6);
-
+    root = insert(root, 8, 3, NULL);
+    root = insert(root, 3, 2, NULL);
+    root = insert(root, 1, 3, NULL);
+    root = insert(root, 6, 2, NULL);
+    root = insert(root, 7, 1, NULL);
+    root = insert(root, 10, 9, NULL);
+    root = insert(root, 14, 4, NULL);
+    root = insert(root, 4, 6, NULL);
     inorder(root);
-    /*
-    for (int i = 0; i < n; i++)
-        printf("%d:%d ", arr[i].key, arr[i].value);
-    */
+
+    root = deleteNode(root, 6);
+    inorder(root);
+
+    root = deleteNode(root, 3);
+    inorder(root);
 
 }
