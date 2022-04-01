@@ -51,12 +51,15 @@ struct node *find(struct node *node, int key) {
 
 struct node *insert(struct node *node, int key, int value, struct node *pre)
 {
+
     if (node == NULL) return newNode(key, value, pre);
 
     if (key < node->key)
         node->left = insert(node->left, key, value, node);
-    else
+    else if (key > node->key)
         node->right = insert(node->right, key, value, node);
+    else
+        node->value = value;
 
     return node;
 }
@@ -113,6 +116,11 @@ void newTree() {
     root = NULL;
 }
 
+struct node *searchNode(int key) {
+    struct node *node = find(root, key);
+    return node;
+}
+
 struct node *getBeginNode() {
     return minValueNode(root);
 };
@@ -152,5 +160,10 @@ int main()
 
     delNode(3);
     inorder(root);
+
+    struct node *tmp = searchNode(14);
+    printf((isEnd(tmp) ? "YES\n" : "NO\n"));
+    tmp = searchNode(10);
+    printf((isEnd(tmp) ? "YES\n" : "NO\n"));
 
 }
