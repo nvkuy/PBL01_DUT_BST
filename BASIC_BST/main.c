@@ -19,25 +19,6 @@ struct node *newNode(int nkey, int nval, struct node *pre)
     return temp;
 }
 
-void dfs(struct node *root)
-{
-    if (root != NULL)
-    {
-        dfs(root->left);
-        struct node *par = root->parent;
-        if (par != NULL)
-            printf("%d:", par->key);
-        printf("%d:%d ", root->key, root->value);
-        dfs(root->right);
-    }
-}
-
-void inorder(struct node *root)
-{
-    dfs(root);
-    printf("\n");
-}
-
 struct node *find(struct node *node, int key) {
     if (node == NULL)
         return node;
@@ -68,7 +49,7 @@ struct node *minValueNode(struct node *node)
 {
     struct node *current = node;
 
-    while (current && current->left != NULL)
+    while (current != NULL && current->left != NULL)
         current = current->left;
 
     return current;
@@ -125,27 +106,38 @@ struct node *getBeginNode() {
     return minValueNode(root);
 };
 
-struct node *nextNode(struct node *curNode) {
-    if (curNode == NULL)
-        return curNode;
-    if (curNode->right != NULL)
-        return curNode->right;
-    struct node *par = curNode->parent;
-    if (par == NULL)
-        return par;
-    while ((par->right)->key == curNode->key) {
-        curNode = par;
-        par = curNode->parent;
-        if (par == NULL)
-            return par;
-    }
-    return par;
-}
-
 bool isEnd(struct node *node) {
     if ((node->key) == maxKey)
         return true;
     return false;
+}
+
+struct node *nextNode(struct node *curNode) {
+    if (curNode == NULL)
+        return curNode;
+    if (curNode->right != NULL)
+        return minValueNode(curNode->right);
+    if (isEnd(curNode))
+        return NULL;
+    struct node *par = curNode->parent, *tmp = curNode;
+    if (par->left->key == curNode->key)
+        return par;
+    while (par->right->key == tmp->key) {
+        tmp = par;
+        par = tmp->parent;
+    }
+    return par;
+}
+
+void inorder() {
+    struct node *it = getBeginNode();
+    while (it != NULL) {
+        //if (it->parent != NULL)
+        //    printf("%d:", it->parent->key);
+        printf("%d:%d ", it->key, it->value);
+        it = nextNode(it);
+    }
+    printf("\n");
 }
 
 void addNode(int key, int val) {
@@ -170,23 +162,17 @@ int main()
     addNode(10, 9);
     addNode(14, 4);
     addNode(4, 6);
-    inorder(root);
+    inorder();
 
     delNode(6);
-    inorder(root);
+    inorder();
 
     delNode(3);
-    inorder(root);
+    inorder();
 
     struct node *tmp = searchNode(14);
     printf((isEnd(tmp) ? "YES\n" : "NO\n"));
     tmp = searchNode(10);
     printf((isEnd(tmp) ? "YES\n" : "NO\n"));
-
-    struct node *it = getBeginNode();
-    while (it != NULL) {
-        printf("%d:%d ", it->key, it->value);
-        it = nextNode(it);
-    }
 
 }
