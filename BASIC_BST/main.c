@@ -126,7 +126,20 @@ struct node *getBeginNode() {
 };
 
 struct node *nextNode(struct node *curNode) {
-    //...
+    if (curNode == NULL)
+        return curNode;
+    if (curNode->right != NULL)
+        return curNode->right;
+    struct node *par = curNode->parent;
+    if (par == NULL)
+        return par;
+    while ((par->right)->key == curNode->key) {
+        curNode = par;
+        par = curNode->parent;
+        if (par == NULL)
+            return par;
+    }
+    return par;
 }
 
 bool isEnd(struct node *node) {
@@ -169,5 +182,11 @@ int main()
     printf((isEnd(tmp) ? "YES\n" : "NO\n"));
     tmp = searchNode(10);
     printf((isEnd(tmp) ? "YES\n" : "NO\n"));
+
+    struct node *it = getBeginNode();
+    while (it != NULL) {
+        printf("%d:%d ", it->key, it->value);
+        it = nextNode(it);
+    }
 
 }
