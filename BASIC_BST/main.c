@@ -125,6 +125,10 @@ struct node *getBeginNode() {
     return minValueNode(root);
 };
 
+struct node *nextNode(struct node *curNode) {
+    //...
+}
+
 bool isEnd(struct node *node) {
     if ((node->key) == maxKey)
         return true;
