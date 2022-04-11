@@ -32,7 +32,9 @@ struct node *find(struct node *node, int key) {
 struct node *insert(struct node *node, int key, int value, struct node *pre)
 {
 
-    if (node == NULL) return newNode(key, value, pre);
+    if (node == NULL) {
+        return newNode(key, value, pre);
+    }
 
     if (key < node->key)
         node->left = insert(node->left, key, value, node);
@@ -50,6 +52,16 @@ struct node *minValueNode(struct node *node)
 
     while (current != NULL && current->left != NULL)
         current = current->left;
+
+    return current;
+}
+
+struct node *maxValueNode(struct node *node)
+{
+    struct node *current = node;
+
+    while (current != NULL && current->right != NULL)
+        current = current->right;
 
     return current;
 }
@@ -89,10 +101,11 @@ struct node *deleteNode(struct node *root, int key)
 
 //Binary search tree operations
 struct node *root;
-int maxKey;
+int maxKey, treeSize;
 
 void newTree() {
     maxKey = -1e9;
+    treeSize = 0;
     root = NULL;
 }
 
@@ -144,11 +157,21 @@ void inorder() {
 }
 
 void addNode(int key, int val) {
+    if (searchNode(key) == NULL)
+        treeSize++;
     root = insert(root, key, val, NULL);
-    if (key > maxKey)
-        maxKey = key;
+    struct node *tmp = maxValueNode(root);
+    maxKey = tmp->key;
 }
 
 void delNode(int key) {
+    if (searchNode(key) != NULL)
+        treeSize--;
     root = deleteNode(root, key);
+    struct node *tmp = maxValueNode(root);
+    maxKey = tmp->key;
+}
+
+int getSize() {
+    return treeSize;
 }

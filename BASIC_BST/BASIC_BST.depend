@@ -1,7 +1,6 @@
 # depslib dependency file v1.0
-1648862244 source:e:\projects\pbl1_dalttt\bst\basic_bst\main.c
+1649166594 source:e:\projects\pbl1_dalttt\bst\basic_bst\main.c
 	<stdio.h>
 	<stdlib.h>
 	<stdbool.h>
-	<math.h>
 

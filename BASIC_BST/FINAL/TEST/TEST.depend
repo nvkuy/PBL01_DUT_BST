@@ -1,0 +1,11 @@
+# depslib dependency file v1.0
+1649646190 source:e:\projects\pbl1_dalttt\bst\basic_bst\final\test\main.c
+	<stdio.h>
+	<stdlib.h>
+	"BinarySearchTree.h"
+
+1649646028 e:\projects\pbl1_dalttt\bst\basic_bst\final\test\binarysearchtree.h
+	<stdio.h>
+	<stdlib.h>
+	<stdbool.h>
+
