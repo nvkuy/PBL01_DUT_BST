@@ -1,0 +1,5 @@
+# depslib dependency file v1.0
+1655092350 source:e:\projects\pbl1_dalttt\bst\redblacktree\final\cses_distinctnumbers\main.c
+	<stdio.h>
+	<stdlib.h>
+

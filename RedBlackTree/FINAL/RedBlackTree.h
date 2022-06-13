@@ -9,8 +9,7 @@ enum nodeColor
 
 struct rbNode
 {
-    int data;
-    enum nodeColor color;
+    int data, color;
     struct rbNode *link[2];
 };
 
@@ -398,10 +397,6 @@ void newTree() {
     treeSize = 0;
 }
 
-int getSize() {
-    return treeSize;
-}
-
 void delElement(int data) {
     root = deletion(data, root, &treeSize);
 }
@@ -412,40 +407,4 @@ void addElement(int data) {
 
 void inorder() {
     inorderTraversal(root);
-}
-
-int main()
-{
-    newTree();
-    int ch, data;
-    while (1)
-    {
-        printf("1.Insert\n2.Delete\n3.Traverse\n2.Exit\n");
-        scanf("%d", &ch);
-        switch (ch)
-        {
-        case 1:
-            printf("Enter the element to insert:");
-            scanf("%d", &data);
-            addElement(data);
-            break;
-        case 2:
-            printf("Enter the element to delete:");
-            scanf("%d", &data);
-            delElement(data);
-            break;
-        case 3:
-            printf("Tree size: %d\n", treeSize);
-            inorder();
-            printf("\n");
-            break;
-        case 4:
-            exit(0);
-        default:
-            printf("Not available\n");
-            break;
-        }
-        printf("\n");
-    }
-    return 0;
 }
