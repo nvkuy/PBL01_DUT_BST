@@ -29,17 +29,17 @@ struct node *find(struct node *node, int key) {
         return node;
 }
 
-struct node *insert(struct node *node, int key, int value, struct node *pre)
+struct node *insert(struct node *node, int key, int value, struct node *pre, int isRoot)
 {
 
     if (node == NULL) {
-        return newNode(key, value, pre);
+        return newNode(key, value, ((isRoot == 0) ? pre : NULL));
     }
 
     if (key < node->key)
-        node->left = insert(node->left, key, value, node);
+        node->left = insert(node->left, key, value, node, 0);
     else if (key > node->key)
-        node->right = insert(node->right, key, value, node);
+        node->right = insert(node->right, key, value, node, 0);
     else
         node->value = value;
 
@@ -101,10 +101,9 @@ struct node *deleteNode(struct node *root, int key)
 
 //Binary search tree operations
 struct node *root;
-int maxKey, treeSize;
+int treeSize;
 
 void newTree() {
-    maxKey = -1e9;
     treeSize = 0;
     root = NULL;
 }
@@ -122,25 +121,13 @@ struct node *getBeginNode() {
     return minValueNode(root);
 };
 
-bool isEnd(struct node *node) {
-    if ((node->key) == maxKey)
-        return true;
-    return false;
-}
-
 struct node *nextNode(struct node *curNode) {
-    if (curNode == NULL)
-        return curNode;
     if (curNode->right != NULL)
         return minValueNode(curNode->right);
-    if (isEnd(curNode))
-        return NULL;
-    struct node *par = curNode->parent, *tmp = curNode;
-    if (par->left->key == curNode->key)
-        return par;
-    while (par->right->key == tmp->key) {
-        tmp = par;
-        par = tmp->parent;
+    struct node *par = curNode->parent;
+    while (par != NULL && curNode->key > par->key) {
+        curNode = par;
+        par = par->parent;
     }
     return par;
 }
@@ -148,28 +135,30 @@ struct node *nextNode(struct node *curNode) {
 void inorder() {
     struct node *it = getBeginNode();
     while (it != NULL) {
-        //if (it->parent != NULL)
-        //    printf("%d:", it->parent->key);
         printf("%d:%d ", it->key, it->value);
         it = nextNode(it);
     }
     printf("\n");
 }
 
+void showTree(struct node *curNode) {
+    if (curNode == NULL)
+        return;
+    printf("%d:%d ", curNode->key, curNode->value);
+    showTree(curNode->left);
+    showTree(curNode->right);
+}
+
 void addNode(int key, int val) {
     if (searchNode(key) == NULL)
         treeSize++;
-    root = insert(root, key, val, NULL);
-    struct node *tmp = maxValueNode(root);
-    maxKey = tmp->key;
+    root = insert(root, key, val, NULL, 1);
 }
 
 void delNode(int key) {
     if (searchNode(key) != NULL)
         treeSize--;
     root = deleteNode(root, key);
-    struct node *tmp = maxValueNode(root);
-    maxKey = tmp->key;
 }
 
 int getSize() {
@@ -180,32 +169,35 @@ int main()
 {
 
     newTree();
-    addNode(8, 3);
-    addNode(3, 2);
-    addNode(1, 3);
-    addNode(6, 2);
-    addNode(7, 1);
-    addNode(10, 9);
-    addNode(14, 4);
-    addNode(4, 6);
-    printf("%d\n", getSize());
-    inorder();
-
-    delNode(6);
-    printf("%d\n", getSize());
-    inorder();
-
-    delNode(3);
-    printf("%d\n", getSize());
-    inorder();
-
-    struct node *tmp = searchNode(14);
-    printf((tmp != NULL ? "YES\n" : "NO\n"));
-    tmp = searchNode(13);
-    printf((tmp != NULL ? "YES\n" : "NO\n"));
-
-    delNode(14);
-    printf("%d\n", getSize());
+    FILE *fp = fopen("data.txt", "r");
+    int q, t, a, b;
+    struct node *tmp;
+    fscanf(fp, "%d", &q);
+    while (q--) {
+        fscanf(fp, "%d", &t);
+        if (t == 1) {
+            //add or replace
+            fscanf(fp, "%d %d", &a, &b);
+            addNode(a, b);
+            printf("%d\n", getSize());
+            //inorder();
+            showTree(root); //visualize
+            printf("\n");
+        } else if (t == 2) {
+            //del
+            fscanf(fp, "%d", &a);
+            delNode(a);
+            printf("%d\n", getSize());
+            //inorder();
+            showTree(root); //visualize
+            printf("\n");
+        } else {
+            //is in set?
+            fscanf(fp, "%d", &a);
+            tmp = searchNode(a);
+            printf((tmp != NULL ? "YES\n" : "NO\n"));
+        }
+    }
     inorder();
 
 }
