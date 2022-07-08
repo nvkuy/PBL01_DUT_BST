@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "BinarySearchTree.h"
+#include "basic_bst.h"
 
 int main()
 {

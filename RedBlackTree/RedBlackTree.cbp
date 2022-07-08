@@ -31,6 +31,7 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
+		<Unit filename="RBT.h" />
 		<Unit filename="RedBlackTree.h" />
 		<Unit filename="main.c">
 			<Option compilerVar="CC" />

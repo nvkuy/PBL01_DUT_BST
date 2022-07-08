@@ -32,6 +32,7 @@
 			<Add option="-Wall" />
 		</Compiler>
 		<Unit filename="BinarySearchTree.h" />
+		<Unit filename="basic_bst.h" />
 		<Unit filename="main.c">
 			<Option compilerVar="CC" />
 		</Unit>
