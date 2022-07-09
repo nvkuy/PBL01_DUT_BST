@@ -179,7 +179,7 @@ int main()
             //add or replace
             fscanf(fp, "%d %d", &a, &b);
             addNode(a, b);
-            printf("%d\n", getSize());
+            printf("After add node %d %d, Size = %d\n", a, b, getSize());
             //inorder();
             showTree(root); //visualize
             printf("\n");
@@ -187,7 +187,7 @@ int main()
             //del
             fscanf(fp, "%d", &a);
             delNode(a);
-            printf("%d\n", getSize());
+            printf("After del node %d, Size = %d\n", a, getSize());
             //inorder();
             showTree(root); //visualize
             printf("\n");
@@ -195,6 +195,7 @@ int main()
             //is in set?
             fscanf(fp, "%d", &a);
             tmp = searchNode(a);
+            printf("Node %d in set? ", a);
             printf((tmp != NULL ? "YES\n" : "NO\n"));
         }
     }
